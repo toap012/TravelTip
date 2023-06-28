@@ -1,3 +1,5 @@
-.main-nav{
-    background-color: rgb(188, 243, 243);
+.main-nav {
+    margin: auto;
+    width: 70vw;
+    justify-content: space-between;
 }

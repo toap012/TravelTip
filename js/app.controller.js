@@ -6,6 +6,7 @@ window.onAddMarker = onAddMarker
 window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
+window.onSearchLoc = onSearchLoc
 
 function onInit() {
     mapService.initMap()
@@ -22,7 +23,14 @@ function getPosition() {
         navigator.geolocation.getCurrentPosition(resolve, reject)
     })
 }
-
+function onSearchLoc(ev) {
+    const data = new FormData(ev.target)
+    const value = [...data.entries()][0][1]
+    console.log(value);
+    ev.preventDefault()
+    console.log('searching...');
+    mapService.panToSearchedLoc(value)
+}
 function onAddMarker() {
     console.log('Adding a marker')
     mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 })
@@ -31,8 +39,14 @@ function onAddMarker() {
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
+            const locsDisplay = locs.map(loc => {
+                return `<li class="loc-list-item">
+                            Name: ${loc.name} (lat:${loc.lat}, lng:${loc.lng})
+                         </li>`
+            })
             console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+            // document.querySelector('.locs').innerText = JSON.stringify(locs, null, 2)
+            document.querySelector('.locs').innerHTML = locsDisplay.join('')
         })
 }
 

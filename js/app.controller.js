@@ -41,7 +41,9 @@ function onGetLocs() {
         .then(locs => {
             const locsDisplay = locs.map(loc => {
                 return `<li class="loc-list-item">
-                            Name: ${loc.name} (lat:${loc.lat}, lng:${loc.lng})
+                            <button onclick="onDelete()">❌</button>
+                            <button onclick="onPanTo()">GO</button>
+                            Name: ${loc.name} Created At: ${loc.createdAt}
                          </li>`
             })
             console.log('Locations:', locs)

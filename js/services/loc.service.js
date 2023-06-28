@@ -10,11 +10,12 @@ export const locService = {
     save,
     get,
     remove,
-    query
+    query,
+    addPlace
 
 }
 function query() {
-    return storageService.query(PET_KEY)
+    return storageService.query(PLACES_KEY)
 }
 function get(locId) {
     return storageService.get(PLACES_KEY, locId)
@@ -30,58 +31,61 @@ function remove(locId) {
     return storageService.remove(PLACES_KEY, locId)
 }
 
-
+function addPlace(name, coords) {
+    const newPlace = _createPlace(name, coords.lat, coords.lng)
+    save(newPlace)
+}
 
 
 
 function getLocs() {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            resolve(gLocations)
+            resolve(query())
         }, 2000)
     })
 }
-function _createLocations(){
+function _createLocations() {
     let locations = storageService.load(Locations_KEY)
-    if(!locations||!locations.length){
+    if (!locations || !locations.length) {
         locations = [
-_createLocation('Greatplace',  32.047104,  34.832384 ),
-_createLocation('Neveragain',  32.047201,  34.832581)
+            _createLocation('Greatplace', 32.047104, 34.832384),
+            _createLocation('Neveragain', 32.047201, 34.832581)
         ]
-        storageService.save(Locations_KEY,locations)
+        storageService.save(Locations_KEY, locations)
     }
     return locations
 }
 
-function _createLocation(name,lat,lng){
-return{
-    name,
-    lat,
-    lng
-}
-}
-
-function _createPlaces(){
-let Places = storageService.load(PLACES_KEY)
-if(!Places||!Places.length){
-    Places = gLocations.map(loc=>{
-     return   _createPlace(loc.name,loc.lat,loc.lng)
-    })
-    storageService.save(PLACES_KEY,Places)
-}
-return Places
+function _createLocation(name, lat, lng) {
+    return {
+        name,
+        lat,
+        lng
+    }
 }
 
-function _createPlace(name,lat,lng){
-return{
-    id: storageService.makeId(),
-    name,
-    lat,
-    lng,
-    weather: '30°',
-    createdAt: new Date(),
-    updatedAt: null
+function _createPlaces() {
+    let Places = storageService.load(PLACES_KEY)
+    if (!Places || !Places.length) {
+        Places = gLocations.map(loc => {
+            return _createPlace(loc.name, loc.lat, loc.lng)
+        })
+        storageService.save(PLACES_KEY, Places)
+    }
+    return Places
 }
+
+function _createPlace(name, lat, lng) {
+    return {
+        id: '',
+        name,
+        lat,
+        lng,
+        weather: '30°',
+        createdAt: new Date(),
+        updatedAt: null
+    }
 
 }
 console.log(_createPlace());

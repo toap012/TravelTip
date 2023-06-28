@@ -1,14 +1,14 @@
 import { storageService } from "./async.storage.service.js"
+import { locService } from "./loc.service.js"
 
 export const mapService = {
     initMap,
     addMarker,
     panTo,
-    panToSearchedLoc
+    panToSearchedLoc,
 }
 
 
-// Var that is used throughout this Module (not global)
 var gMap
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
@@ -21,31 +21,16 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
                 center: { lat, lng },
                 zoom: 15
             })
-            // let infoWindow = new google.maps.InfoWindow({
-            //     content: "Click the map to get Lat/Lng!",
-            //     position: { lat, lng },
-            // });
-
-            // infoWindow.open(gMap)
-            // Configure the click listener.
             gMap.addListener("click", (mapsMouseEvent) => {
                 console.log(mapsMouseEvent.latLng.lat())
                 console.log(mapsMouseEvent.latLng.lng())
                 const coords = {
-                    lat:mapsMouseEvent.latLng.lat(),
-                    lng:mapsMouseEvent.latLng.lng()
+                    lat: mapsMouseEvent.latLng.lat(),
+                    lng: mapsMouseEvent.latLng.lng()
                 }
+                const placeName = prompt('Place name?')
+                locService.addPlace(placeName, coords)
                 console.log(coords);
-                // Close the current InfoWindow.
-                // infoWindow.close()
-                // Create a new InfoWindow.
-                // infoWindow = new google.maps.InfoWindow({
-                //     position: mapsMouseEvent.latLng,
-                // })
-                // infoWindow.setContent(
-                //     JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
-                // )
-                // infoWindow.open(gMap)
             })
 
             console.log('Map!', gMap)
@@ -54,7 +39,24 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
 }
 
 function panToSearchedLoc(value) {
-    
+    var request = {
+        query: value,
+        fields: ['name', 'geometry'],
+    };
+
+    var service = new google.maps.places.PlacesService(gMap);
+
+    service.findPlaceFromQuery(request, function (results, status) {
+        console.log(results);
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+                // console.log(results[i].geometry.location.lat);
+                addMarker(results[0].geometry.location);
+
+            }
+            gMap.setCenter(results[0].geometry.location);
+        }
+    });
 }
 
 function addMarker(loc) {
@@ -76,7 +78,7 @@ function _connectGoogleApi() {
     if (window.google) return Promise.resolve()
     const API_KEY = 'AIzaSyBc5lxBmbPCfcMOg1jzm8bTyoz0Y7AqeYY'
     var elGoogleApi = document.createElement('script')
-    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}`
+    elGoogleApi.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY}&libraries=places`
     elGoogleApi.async = true
     document.body.append(elGoogleApi)
 

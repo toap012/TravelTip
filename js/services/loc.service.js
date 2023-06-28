@@ -14,21 +14,22 @@ export const locService = {
     addPlace
 
 }
+
 function query() {
     return storageService.query(PLACES_KEY)
 }
-function get(locId) {
-    return storageService.get(PLACES_KEY, locId)
+function get(placeId) {
+    return storageService.get(PLACES_KEY, placeId)
 }
-function save(loc) {
-    if (loc.id) {
-        return storageService.put(PLACES_KEY, loc)
+function save(Place) {
+    if (Place.id) {
+        return storageService.put(PLACES_KEY, Place)
     } else {
-        return storageService.post(PLACES_KEY, loc)
+        return storageService.post(PLACES_KEY, Place)
     }
 }
-function remove(locId) {
-    return storageService.remove(PLACES_KEY, locId)
+function remove(placeId) {
+    return storageService.remove(PLACES_KEY, placeId)
 }
 
 function addPlace(name, coords) {

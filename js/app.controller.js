@@ -7,6 +7,8 @@ window.onPanTo = onPanTo
 window.onGetLocs = onGetLocs
 window.onGetUserPos = onGetUserPos
 window.onSearchLoc = onSearchLoc
+window.onDelete = onDelete
+window.onPanTo = onPanTo
 
 function onInit() {
     mapService.initMap()
@@ -42,7 +44,7 @@ function onGetLocs() {
             const locsDisplay = locs.map(loc => {
                 return `<li class="loc-list-item">
                             <button onclick="onDelete()">❌</button>
-                            <button onclick="onPanTo()">GO</button>
+                            <button onclick="onPanTo(${loc.lat, loc.lng})">GO</button>
                             Name: ${loc.name} Created At: ${loc.createdAt}
                          </li>`
             })
@@ -63,7 +65,7 @@ function onGetUserPos() {
             console.log('err!!!', err)
         })
 }
-function onPanTo() {
+function onPanTo(lat, lng) {
     console.log('Panning the Map')
-    mapService.panTo(35.6895, 139.6917)
+    mapService.panTo(lat, lng)
 }

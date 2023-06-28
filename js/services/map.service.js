@@ -29,7 +29,13 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
             // infoWindow.open(gMap)
             // Configure the click listener.
             gMap.addListener("click", (mapsMouseEvent) => {
-
+                console.log(mapsMouseEvent.latLng.lat())
+                console.log(mapsMouseEvent.latLng.lng())
+                const coords = {
+                    lat:mapsMouseEvent.latLng.lat(),
+                    lng:mapsMouseEvent.latLng.lng()
+                }
+                console.log(coords);
                 // Close the current InfoWindow.
                 // infoWindow.close()
                 // Create a new InfoWindow.

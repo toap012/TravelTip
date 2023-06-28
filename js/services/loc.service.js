@@ -7,7 +7,27 @@ let gLocations = _createLocations()
 let gPlaces = _createPlaces()
 export const locService = {
     getLocs,
-    savePlace
+    save,
+    get,
+    remove,
+    query
+
+}
+function query() {
+    return storageService.query(PET_KEY)
+}
+function get(locId) {
+    return storageService.get(PLACES_KEY, locId)
+}
+function save(loc) {
+    if (loc.id) {
+        return storageService.put(PLACES_KEY, loc)
+    } else {
+        return storageService.post(PLACES_KEY, loc)
+    }
+}
+function remove(locId) {
+    return storageService.remove(PLACES_KEY, locId)
 }
 
 

@@ -3,7 +3,8 @@ import { storageService } from "./async.storage.service.js"
 export const mapService = {
     initMap,
     addMarker,
-    panTo
+    panTo,
+    panToSearchedLoc
 }
 
 
@@ -45,6 +46,9 @@ function initMap(lat = 32.0749831, lng = 34.9120554) {
         })
 }
 
+function panToSearchedLoc(value) {
+    
+}
 
 function addMarker(loc) {
     var marker = new google.maps.Marker({

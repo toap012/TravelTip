@@ -1,0 +1,25 @@
+.main-content-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+}
+
+.wheather-box {
+    grid-column: 1;
+    
+    padding: 1rem;
+    background-color: rgb(255, 255, 255);
+
+    text-align: center;
+}
+
+.locations-box {
+    grid-column: 1;
+
+    padding: 1rem;
+    background-color: rgb(120, 201, 247);
+}
+
+.map {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+}
